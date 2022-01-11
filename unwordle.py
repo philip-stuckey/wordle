@@ -16,4 +16,4 @@ def unwordle(word_list, guess="tares", score=count_unique_results, input=stdin, 
 
 if __name__ == '__main__':
 	wordlist = Path('dict').read_text().split()
-	unwordle(wordlist)
+	unwordle(wordlist, guess="broke")
