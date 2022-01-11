@@ -2,6 +2,7 @@
 from random import choice
 from pathlib import Path
 from sys import stdin, stdout, stderr
+from argparse import ArgumentParser
 
 
 def word_delta(word1, word2):
@@ -11,11 +12,11 @@ def word_delta(word1, word2):
 		'-' for (g,l) in zip(word1, word2)
 	)
 
-def main():
+def main(word, word_list, max_guesses):
 	word_list = Path('dict').read_text().split()
-	word = choice(word_list).strip()
+	word = word if word is not None else choice(word_list).strip()
 
-	for i in range(6):
+	for i in range(max_guesses):
 		guess=''
 		while True:
 			print(f'{i}/6:', end='', file=stderr)
@@ -34,4 +35,14 @@ def main():
 	print(word)
 
 if __name__ == '__main__':
-	main()
+	parser = ArgumentParser()
+	parser.add_argument('-w', '--word', dest="word")
+	parser.add_argument('-n', '--guesses', type=int, dest="max_guesses", default=6)
+	parser.add_argument(
+		'-f',
+		type=lambda x: Path(x).read_text().split(),
+		default='dict',
+		dest='word_list'
+	)
+	args = parser.parse_args()
+	main(**vars(args))
