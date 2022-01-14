@@ -33,7 +33,8 @@ def main(word, word_list, max_guesses):
 			print("you win!", file=stderr)
 			break
 
-	print(word)
+	print(word, file=stdout)
+	stdout.close()
 
 if __name__ == '__main__':
 	parser = ArgumentParser()
