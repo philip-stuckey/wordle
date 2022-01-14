@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3 -u
 from random import choice
 from pathlib import Path
 from sys import stdin, stdout, stderr

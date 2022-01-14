@@ -1,4 +1,4 @@
-#!python3
+#!/usr/bin/python3 -u
 from wordle import word_delta
 from pathlib import Path
 from sys import stdin, stdout, stderr
