@@ -42,7 +42,7 @@ if __name__ == '__main__':
 	parser.add_argument(
 		'-f',
 		type=lambda x: Path(x).read_text().split(),
-		default='dict',
+		default='wordles.txt',
 		dest='word_list'
 	)
 	args = parser.parse_args()
