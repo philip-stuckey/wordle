@@ -7,7 +7,13 @@ from argparse import ArgumentParser
 def count_unique_results(word, word_list):
 	return len(set(map(lambda w: word_delta(word, w), word_list)))
 
-def unwordle(word_list, guess="tares", score=count_unique_results, input=stdin, output=stdout):
+def score(word, word_list):
+	return count_unique_results(word,word_list)
+
+def unwordle(word_list, guess, score=count_unique_results, input=stdin, output=stdout):
+	if guess is None:
+		guess = max(word_list, key=lambda w: score(w,word_list))
+
 	print(guess, file=output)
 	output.flush()
 	for result in input:
@@ -20,7 +26,7 @@ if __name__ == '__main__':
 		return Path('dict').read_text().split()
 
 	parser = ArgumentParser()
-	parser.add_argument('-g', '--guess', dest="guess", default="tears")
+	parser.add_argument('-g', '--guess', dest="guess")
 	parser.add_argument('-w', '--word-list', dest="word_list", default='dict', type=word_list)
 	args = parser.parse_args()
 	unwordle(**vars(args))
