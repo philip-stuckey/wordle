@@ -9,6 +9,7 @@ def count_unique_results(word, word_list):
 
 def unwordle(word_list, guess="tares", score=count_unique_results, input=stdin, output=stdout):
 	print(guess, file=output)
+	output.flush()
 	for result in input:
 		word_list = list(filter(lambda w: word_delta(guess, w) == result.strip(), word_list))
 		guess = max(word_list, key = lambda w: score(w, word_list))

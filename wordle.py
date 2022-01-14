@@ -28,6 +28,7 @@ def main(word, word_list, max_guesses):
 				break
 
 		print(word_delta(guess, word), file=stdout)
+		stdout.flush()
 		if guess == word:
 			print("you win!", file=stderr)
 			break
