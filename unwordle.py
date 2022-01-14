@@ -14,12 +14,23 @@ def unwordle(word_list, guess, score=count_unique_results, input=stdin, output=s
 	if guess is None:
 		guess = max(word_list, key=lambda w: score(w,word_list))
 
+	guesses=0
 	print(guess, file=output)
 	output.flush()
 	for result in input:
 		word_list = list(filter(lambda w: word_delta(guess, w) == result.strip(), word_list))
+		if not word_list: break
 		guess = max(word_list, key = lambda w: score(w, word_list))
 		print(guess, file=output)
+		output.flush()
+		guesses += 1
+	else:
+		print(guess, guesses, file=stderr)
+		output.close()
+		return
+
+	print("failed", -1, file=stderr)
+	output.close()
 
 if __name__ == '__main__':
 	def word_list(path):
