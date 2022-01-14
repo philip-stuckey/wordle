@@ -27,6 +27,6 @@ if __name__ == '__main__':
 
 	parser = ArgumentParser()
 	parser.add_argument('-g', '--guess', dest="guess")
-	parser.add_argument('-w', '--word-list', dest="word_list", default='wordles.txt', type=word_list)
+	parser.add_argument('-f', '--word-list', dest="word_list", default='wordles.txt', type=word_list)
 	args = parser.parse_args()
 	unwordle(**vars(args))
