@@ -19,33 +19,47 @@ def score(word, word_list):
 #	return count_unique_results(word,word_list)
 
 def unwordle(word_list, guess, score=count_unique_results, input=stdin, output=stdout):
+
+	def try_word(word):
+		print(word, file=output)
+		output.flush()
+
 	if guess is None:
 		guess = max(word_list, key=lambda w: score(w,word_list))
 
-	guesses=0
-	print(guess, file=output)
-	output.flush()
-	for result in input:
-		word_list = list(filter(lambda w: word_delta(guess, w) == result.strip(), word_list))
-		if not word_list: break
-		guess = max(word_list, key = lambda w: score(w, word_list))
-		print(guess, file=output)
-		output.flush()
-		guesses += 1
-	else:
-		print(guess, guesses, file=stderr)
-		output.close()
-		return
+	try_word(guess)
 
-	print("failed", -1, file=stderr)
+	guesses=1
+	candidates = word_list.copy()
+
+	for result in input:
+		if result == guess:
+			output.flush()
+			output.close()
+			return (guess, guesses)
+
+		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
+		if len(candidates) == 1:
+			try_word(candidates[0])
+			continue
+
+		if not candidates:
+			return ("failed", -1)
+
+		guess = max(word_list, key = lambda w: score(w, candidates))
+		try_word(guess)
+		guesses += 1
 	output.close()
+
+	return (guess, guesses)
 
 if __name__ == '__main__':
 	def word_list(path):
+		print(path, file=stderr)
 		return Path('dict').read_text().split()
 
 	parser = ArgumentParser()
 	parser.add_argument('-g', '--guess', dest="guess")
 	parser.add_argument('-f', '--word-list', dest="word_list", default='wordles.txt', type=word_list)
 	args = parser.parse_args()
-	unwordle(**vars(args))
+	print(*unwordle(**vars(args)), file=stderr)
