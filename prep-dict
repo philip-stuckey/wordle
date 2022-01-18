@@ -1,0 +1,13 @@
+#!/usr/bin/sed -rf
+
+# remove lines with the wrong number of characters
+/^.{1,4}$/d
+/^.{6,}$/d
+
+# make everything lowercase
+s/.*/\0\L/g
+
+# remove any line with non-a-z characters
+/[^a-z]/d
+/[éêóôöü]/d
+
