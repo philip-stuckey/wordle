@@ -18,14 +18,22 @@ def score(word, word_list):
 	return negative_mean_group_size(word, word_list)
 #	return count_unique_results(word,word_list)
 
-def unwordle(word_list, guess, score=count_unique_results, input=stdin, output=stdout):
+def unwordle(
+    word_list, 
+    guess, 
+    score=count_unique_results, 
+    input=stdin, 
+    output=stdout):
 
 	def try_word(word):
 		print(word, file=output)
 		output.flush()
 
+	def pick_word(candidates):
+		return max(word_list, key=lambda w: score(w, candidates))
+
 	if guess is None:
-		guess = max(word_list, key=lambda w: score(w,word_list))
+		guess = pick_word(word_list)
 
 	try_word(guess)
 
@@ -33,20 +41,18 @@ def unwordle(word_list, guess, score=count_unique_results, input=stdin, output=s
 	candidates = word_list.copy()
 
 	for result in input:
-		if result == guess:
+		if result == guess.strip():
 			output.flush()
 			output.close()
 			return (guess, guesses)
 
 		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
-		if len(candidates) == 1:
-			try_word(candidates[0])
-			continue
-
 		if not candidates:
 			return ("failed", -1)
-
-		guess = max(word_list, key = lambda w: score(w, candidates))
+		elif len(candidates) == 1:
+			guess = candidates[0]
+		else:
+			guess = pick_word(candidates)
 		try_word(guess)
 		guesses += 1
 	output.close()
