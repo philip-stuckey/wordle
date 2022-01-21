@@ -8,33 +8,60 @@ from statistics import mean
 def freq(data):
 	return [sum(map(lambda x: x==y, data)) for y in set(data)]
 
+def negative_max_group_size(word, word_list):
+	return -max(freq(map(lambda w: word_delta(word, w), word_list)))
+
 def negative_mean_group_size(word, word_list):
 	return -mean(freq(list(map(lambda w: word_delta(word, w), word_list))))
 
 def count_unique_results(word, word_list):
 	return len(set(map(lambda w: word_delta(word, w), word_list)))
 
-def unwordle(word_list, guess, score=negative_mean_group_size, input=stdin, output=stdout):
-	if guess is None:
-		guess = max(word_list, key=lambda w: score(w,word_list))
+def score(word, word_list):
+	return negative_mean_group_size(word, word_list)
+#	return count_unique_results(word,word_list)
 
-	guesses=0
-	print(guess, file=output)
-	output.flush()
-	for result in input:
-		word_list = list(filter(lambda w: word_delta(guess, w) == result.strip(), word_list))
-		if not word_list: break
-		guess = max(word_list, key = lambda w: score(w, word_list))
-		print(guess, file=output)
+def unwordle(
+    word_list, 
+    guess, 
+    score=negative_max_group_size, 
+    input=stdin, 
+    output=stdout):
+
+	def try_word(word):
+		print(word, file=output)
 		output.flush()
-		guesses += 1
-	else:
-		print(guess, guesses, file=stderr)
-		output.close()
-		return
 
-	print("failed", -1, file=stderr)
+	def pick_word(candidates):
+		return max(candidates, key=lambda w: score(w, candidates))
+
+	if guess is None:
+		guess = pick_word(word_list)
+
+	try_word(guess)
+
+	guesses=1
+	candidates = word_list.copy()
+
+	for result in input:
+		if result == guess.strip():
+			output.flush()
+			output.close()
+			return (guess, guesses)
+
+		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
+		if not candidates:
+			try_word("tears")
+			return ("failed", -1)
+		elif len(candidates) == 1:
+			guess = candidates[0]
+		else:
+			guess = pick_word(candidates)
+		try_word(guess)
+		guesses += 1
 	output.close()
+
+	return (guess, guesses)
 
 if __name__ == '__main__':
 	def word_list(path):
@@ -44,4 +71,4 @@ if __name__ == '__main__':
 	parser.add_argument('-g', '--guess', dest="guess")
 	parser.add_argument('-f', '--word-list', dest="word_list", default='wordles.txt', type=word_list)
 	args = parser.parse_args()
-	unwordle(**vars(args))
+	print(*unwordle(**vars(args)), file=stderr)

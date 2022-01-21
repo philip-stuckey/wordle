@@ -5,7 +5,7 @@ rm result;
 while read word
 do
 	mkfifo result
-	./unwordle.py -g tears < result | ./wordle.py -w $word -n 100 >> result
+	./unwordle.py -g tears < result | ./wordle.py -w $word -n 100 >> result 2> /dev/null
 	rm result;
 	sleep 0.125
 done < wordles.txt
