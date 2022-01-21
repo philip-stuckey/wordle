@@ -8,6 +8,9 @@ from statistics import mean
 def freq(data):
 	return [sum(map(lambda x: x==y, data)) for y in set(data)]
 
+def negative_max_group_size(word, word_list):
+	return -max(freq(map(lambda w: word_delta(word, w), word_list)))
+
 def negative_mean_group_size(word, word_list):
 	return -mean(freq(list(map(lambda w: word_delta(word, w), word_list))))
 
@@ -21,7 +24,7 @@ def score(word, word_list):
 def unwordle(
     word_list, 
     guess, 
-    score=count_unique_results, 
+    score=negative_max_group_size, 
     input=stdin, 
     output=stdout):
 
@@ -48,6 +51,7 @@ def unwordle(
 
 		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
 		if not candidates:
+			try_word("tears")
 			return ("failed", -1)
 		elif len(candidates) == 1:
 			guess = candidates[0]
