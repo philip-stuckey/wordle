@@ -61,7 +61,6 @@ def unwordle(
 
 if __name__ == '__main__':
 	def word_list(path):
-		print(path, file=stderr)
 		return Path('dict').read_text().split()
 
 	parser = ArgumentParser()

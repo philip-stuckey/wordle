@@ -24,6 +24,7 @@ def main(word, word_list, max_guesses):
 			guess = stdin.readline().strip()
 			if guess not in word_list:
 				print(f"'{guess}' not in word list", file=stderr)
+				return
 			else:
 				break
 
