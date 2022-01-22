@@ -9,8 +9,13 @@ from math import log
 def freq(data):
 	return (sum(map(lambda x: x==y, data)) for y in set(data))
 
+def word_delta2(wordA, wordB):
+	return sum(
+		(3**i)*(1 if a==b else 2 if a in wordB else 3) for (i, (a,b)) in enumerate(zip(wordA, wordB))
+	)
+
 def group_sizes(word, word_list):
-	return freq(map(lambda w: word_delta(w, word_list)))
+	return freq(map(lambda w: word_delta2(w, word_list)))
 
 def freq_sqr(data):
 	return (sum(map(lambda x: x==y, data))**2 for y in set(data))
@@ -20,7 +25,7 @@ def entropy(word, word_list):
 	return sum(S/W * log(S/W) for S in group_sizes(word, word_list))
 
 def expected_group_size(word, word_list):
-	return mean(freq_sqr(map(lambda w: word_delta(word, w), word_list)))
+	return mean(freq_sqr(map(lambda w: word_delta2(word, w), word_list)))
 
 def max_group_size(word, word_list):
 	return max(group_sizes(word, word_list))
