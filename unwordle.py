@@ -45,11 +45,6 @@ def unwordle(
 	candidates = word_list.copy()
 
 	for result in input:
-		if result == guess.strip():
-			output.flush()
-			output.close()
-			return (guess, guesses)
-
 		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
 		debug(candidates if len(candidates) < 10 else len(candidates))
 		if not candidates:
