@@ -8,14 +8,14 @@ from statistics import mean
 def freq(data):
 	return (sum(map(lambda x: x==y, data)) for y in set(data))
 
-def negative_max_group_size(word, word_list):
-	return -max(freq(map(lambda w: word_delta(word, w), word_list)))
+def max_group_size(word, word_list):
+	return max(freq(map(lambda w: word_delta(word, w), word_list)))
 
-def negative_mean_group_size(word, word_list):
-	return -mean(freq(list(map(lambda w: word_delta(word, w), word_list))))
+def mean_group_size(word, word_list):
+	return mean(freq(list(map(lambda w: word_delta(word, w), word_list))))
 
-def count_unique_results(word, word_list):
-	return len(set(map(lambda w: word_delta(word, w), word_list)))
+def negative_count_unique_results(word, word_list):
+	return -len(set(map(lambda w: word_delta(word, w), word_list)))
 
 def debug(*args, file=stderr, **kwargs):
 	pass
@@ -34,7 +34,7 @@ def unwordle(
 		output.flush()
 
 	def pick_word(candidates):
-		return max(candidates, key=lambda w: score(w, candidates))
+		return min(candidates, key=lambda w: score(w, candidates))
 
 	if guess is None:
 		guess = pick_word(word_list)
