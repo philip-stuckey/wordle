@@ -8,6 +8,12 @@ from statistics import mean
 def freq(data):
 	return (sum(map(lambda x: x==y, data)) for y in set(data))
 
+def freq_sqr(data):
+	return (sum(map(lambda x: x==y, data))**2 for y in set(data))
+
+def expected_group_size(word, word_list):
+	return mean(freq_sqr(map(lambda w: word_delta(word, w), word_list)))
+
 def max_group_size(word, word_list):
 	return max(freq(map(lambda w: word_delta(word, w), word_list)))
 
@@ -25,7 +31,7 @@ def debug(*args, file=stderr, **kwargs):
 def unwordle(
     word_list, 
     guess, 
-    score=negative_max_group_size, 
+    score=expected_group_size, 
     input=stdin, 
     output=stdout):
 	debug(score)
