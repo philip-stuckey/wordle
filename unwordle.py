@@ -4,6 +4,7 @@ from pathlib import Path
 from sys import stdin, stdout, stderr
 from argparse import ArgumentParser
 from statistics import mean
+from math import log
 
 def freq(data):
 	return (sum(map(lambda x: x==y, data)) for y in set(data))
@@ -13,6 +14,10 @@ def group_sizes(word, word_list):
 
 def freq_sqr(data):
 	return (sum(map(lambda x: x==y, data))**2 for y in set(data))
+
+def entropy(word, word_list):
+	W = len(word_list)
+	return sum(S/W * log(S/W) for S in group_sizes(word, word_list))
 
 def expected_group_size(word, word_list):
 	return mean(freq_sqr(map(lambda w: word_delta(word, w), word_list)))
