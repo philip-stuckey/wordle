@@ -8,6 +8,9 @@ from statistics import mean
 def freq(data):
 	return (sum(map(lambda x: x==y, data)) for y in set(data))
 
+def group_sizes(word, word_list):
+	return freq(map(lambda w: word_delta(w, word_list)))
+
 def freq_sqr(data):
 	return (sum(map(lambda x: x==y, data))**2 for y in set(data))
 
@@ -15,10 +18,10 @@ def expected_group_size(word, word_list):
 	return mean(freq_sqr(map(lambda w: word_delta(word, w), word_list)))
 
 def max_group_size(word, word_list):
-	return max(freq(map(lambda w: word_delta(word, w), word_list)))
+	return max(group_sizes(word, word_list))
 
 def mean_group_size(word, word_list):
-	return mean(freq(list(map(lambda w: word_delta(word, w), word_list))))
+	return mean(group_sizes(word, word_list))
 
 def negative_count_unique_results(word, word_list):
 	return -len(set(map(lambda w: word_delta(word, w), word_list)))
