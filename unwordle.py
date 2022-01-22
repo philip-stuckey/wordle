@@ -17,9 +17,10 @@ def negative_mean_group_size(word, word_list):
 def count_unique_results(word, word_list):
 	return len(set(map(lambda w: word_delta(word, w), word_list)))
 
-def score(word, word_list):
-	return negative_mean_group_size(word, word_list)
-#	return count_unique_results(word,word_list)
+def debug(*args, file=stderr, **kwargs):
+	pass
+#	return print(*args, file=file, **kwargs)
+
 
 def unwordle(
     word_list, 
@@ -27,7 +28,7 @@ def unwordle(
     score=negative_max_group_size, 
     input=stdin, 
     output=stdout):
-
+	debug(score)
 	def try_word(word):
 		print(word, file=output)
 		output.flush()
@@ -50,6 +51,7 @@ def unwordle(
 			return (guess, guesses)
 
 		candidates = list(filter(lambda w: word_delta(guess, w) == result.strip(), candidates))
+		debug(candidates if len(candidates) < 10 else len(candidates))
 		if not candidates:
 			try_word("tears")
 			return ("failed", -1)
