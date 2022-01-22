@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 from statistics import mean
 
 def freq(data):
-	return [sum(map(lambda x: x==y, data)) for y in set(data)]
+	return (sum(map(lambda x: x==y, data)) for y in set(data))
 
 def negative_max_group_size(word, word_list):
 	return -max(freq(map(lambda w: word_delta(word, w), word_list)))
@@ -49,7 +49,7 @@ def unwordle(
 		debug(candidates if len(candidates) < 10 else len(candidates))
 		if not candidates:
 			try_word("tears")
-			return ("failed", -1)
+			return ("failed", -guesses)
 		elif len(candidates) == 1:
 			guess = candidates[0]
 		else:
