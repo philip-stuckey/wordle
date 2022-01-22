@@ -1,5 +1,5 @@
 #!/usr/bin/python3 -u
-from wordle import word_delta
+from wordle import word_delta, word_list
 from pathlib import Path
 from sys import stdin, stdout, stderr
 from argparse import ArgumentParser
@@ -64,8 +64,12 @@ def unwordle(
 	return (guess, guesses)
 
 if __name__ == '__main__':
-	def word_list(path):
-		return Path('dict').read_text().split()
+	try:
+		import signal
+		signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+	except (ImportError, AttributeError):
+		# Do nothing on platforms without signals or ``SIGPIPE``.
+		pass
 
 	parser = ArgumentParser()
 	parser.add_argument('-g', '--guess', dest="guess")
