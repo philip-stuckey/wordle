@@ -1,8 +1,11 @@
-#!/usr/bin/env -S julia -t4 --startup-file=no
+#!/usr/bin/env -S julia -t4 --startup-file=no 
+#-e 'using DaemonMode; runargs()'
 using Statistics
 using ArgParse
 
-word_diff(A, B) = sum(if a==b; 1 elseif a in B; 2 else 3 end for (i, (a,b)) in enumerate(zip(A, B)))
+word_diff(A, B) = sum(3^i * if a==b; 1 elseif a in B; 2 else 3 end for (i, (a,b)) in enumerate(zip(A, B)))
+
+parse_diff(s) = sum(3^i * if a=='-'; 3 elseif a=='+'; 2; else 1 end for (i, a) in enumerate(s))
 
 freq(data) = (sum(==(x), data) for x in unique(data))
 
@@ -21,7 +24,7 @@ entropy(word, words) = let W = length(words);  sum(S/W * log(S/W) for S in group
 function unwordle(
 	word_list, 
 	guess, 
-	score=entropy, 
+	score=negative_num_groups, 
 	input=stdin, 
 	output=stdout
 	)
@@ -42,7 +45,7 @@ function unwordle(
 	candidates = copy(word_list)
 
 	for result in eachline(input)
-		filter!(w-> word_diff(guess, w) == result, candidates)
+		filter!(w-> word_diff(guess, w) == parse_diff(result), candidates)
 		if isempty(candidates)
 			try_word("tares")
 			return ("failed", -guesses)
@@ -71,6 +74,7 @@ function main()
 	end
 	args = parse_args(parser)
 	join(stderr, unwordle(readlines(args["word-list"]), args["guess"]), " ")
+	println(stderr)
 end
 
 main()

@@ -1,0 +1,29 @@
+# generating first guess (this may take some time)
+# first guess 
+word attempts
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
+usage: unwordle.py [-h] [-g GUESS] [-f WORD_LIST]
+unwordle.py: error: argument -g/--guess: expected one argument
