@@ -15,14 +15,14 @@ def word_delta2(wordA, wordB):
 	)
 
 def group_sizes(word, word_list):
-	return freq(map(lambda w: word_delta2(w, word_list)))
+	return freq(map(lambda w: word_delta(w, word_list), word_list))
 
 def freq_sqr(data):
 	return (sum(map(lambda x: x==y, data))**2 for y in set(data))
 
-def entropy(word, word_list):
-	W = len(word_list)
-	return sum(S/W * log(S/W) for S in group_sizes(word, word_list))
+def entropy(word, words):
+	W = len(words)
+	return sum(S/W * log(S/W) for S in group_sizes(word, words))
 
 def expected_group_size(word, word_list):
 	return mean(freq_sqr(map(lambda w: word_delta2(word, w), word_list)))
@@ -44,7 +44,7 @@ def debug(*args, file=stderr, **kwargs):
 def unwordle(
     word_list, 
     guess, 
-    score=expected_group_size, 
+    score=entropy,
     input=stdin, 
     output=stdout):
 	debug(score)
