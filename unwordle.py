@@ -53,7 +53,7 @@ def unwordle(
 		output.flush()
 
 	def pick_word(candidates):
-		return min(candidates, key=lambda w: score(w, candidates))
+		return min(word_list, key=lambda w: score(w, candidates))
 
 	if guess is None:
 		guess = pick_word(word_list)
