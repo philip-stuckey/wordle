@@ -35,7 +35,11 @@ function unwordle(
 		flush(output)
 	end
 
-	pick_word(words) = words[last(findmin(w-> score(w, words), words))]
+	function pick_word(words) 
+		(word_score, index) = findmin(w-> score(w, words), word_list)
+		@debug "" index word_list[index]
+		return word_list[index]
+	end
 	
 	if guess == nothing
 		guess = pick_word(word_list)
@@ -45,9 +49,12 @@ function unwordle(
 	guesses = 1
 
 	candidates = copy(word_list)
+	@debug " " length(candidates) guesses
 
 	for result in eachline(input)
-		filter!(w-> word_diff(guess, w) == parse_diff(result), candidates)
+		filter!(w-> word_diff1(guess, w) == result, candidates)
+		@debug " " guesses ifelse(length(candidates) < 10, candidates,length(candidates))
+
 		if isempty(candidates)
 			try_word("tares")
 			return ("failed", -guesses)
