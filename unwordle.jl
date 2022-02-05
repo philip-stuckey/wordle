@@ -56,8 +56,7 @@ function unwordle(
 		@debug " " guesses ifelse(length(candidates) < 10, candidates,length(candidates))
 
 		if isempty(candidates)
-			try_word("tares")
-			return ("failed", -guesses)
+			error("ran out of words to guess from")
 		elseif length(candidates) == 1
 			guess = only(candidates)
 		else
