@@ -25,8 +25,8 @@ entropy(word, words) = let W = length(words);  sum(S/W * log(S/W) for S in group
 
 function unwordle(
 	word_list, 
-	guess, 
-	score=negative_num_groups, 
+	guess=nothing;
+	score=mean_group_size, 
 	input=stdin, 
 	output=stdout
 	)
