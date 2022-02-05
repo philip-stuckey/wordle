@@ -65,7 +65,7 @@ function unwordle(
 		try_word(guess)
 		guesses += 1
 	end
-	return (guess, guesses)
+	return (word=guess, guesses=guesses)
 end
 
 
@@ -81,7 +81,8 @@ function main()
 		default = "./wordles.txt"
 	end
 	args = parse_args(parser)
-	join(stderr, unwordle(readlines(args["word-list"]), args["guess"]), " ")
+	result = unwordle(readlines(args["word-list"]), args["guess"])
+	join(stderr, result, " ")
 	println(stderr)
 end
 
