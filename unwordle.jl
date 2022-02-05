@@ -86,4 +86,8 @@ function main()
 	println(stderr)
 end
 
-main()
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    # do something only this file is executed. 
+	main()
+end
