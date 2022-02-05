@@ -32,7 +32,7 @@ function unwordle(
 	)
 	function try_word(word) 
 		println(output, word)
-		flush(stdout)
+		flush(output)
 	end
 
 	pick_word(words) = words[last(findmin(w-> score(w, words), words))]
