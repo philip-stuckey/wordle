@@ -42,10 +42,10 @@ def debug(*args, file=stderr, **kwargs):
 
 
 def unwordle(
-    word_list, 
-    guess, 
-    score=entropy,
-    input=stdin, 
+    word_list,
+    guess,
+    score=mean_group_size,
+    input=stdin,
     output=stdout):
 	debug(score)
 	def try_word(word):
