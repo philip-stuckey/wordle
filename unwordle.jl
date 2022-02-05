@@ -5,6 +5,8 @@ using ArgParse
 
 word_diff(A, B) = sum(3^i * if a==b; 1 elseif a in B; 2 else 3 end for (i, (a,b)) in enumerate(zip(A, B)))
 
+word_diff1(A,B) = join(if a==b; a; elseif a in B; '+' else '-' end for (a,b) in zip(A,B))
+
 parse_diff(s) = sum(3^i * if a=='-'; 3 elseif a=='+'; 2; else 1 end for (i, a) in enumerate(s))
 
 freq(data) = (sum(==(x), data) for x in unique(data))
