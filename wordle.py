@@ -21,7 +21,7 @@ def main(word, word_list, max_guesses):
 	for i in range(max_guesses):
 		guess=''
 		while True:
-			print(f'{i}/6:', end='', file=stderr)
+			print(f'{i}/{max_guesses}:', end='', file=stderr)
 			stderr.flush()
 			guess = stdin.readline().strip()
 			if guess not in word_list:
@@ -30,14 +30,15 @@ def main(word, word_list, max_guesses):
 			else:
 				break
 
-		print(word_delta(guess, word), file=stdout)
-		stdout.flush()
 		if guess == word:
 			print("you win!", file=stderr)
 			break
 
-	print(word, file=stdout)
-	stdout.close()
+		print(word_delta(guess, word), file=stdout)
+		stdout.flush()
+
+	print("secret word:", word, file=stderr)
+
 
 if __name__ == '__main__':
 	parser = ArgumentParser()

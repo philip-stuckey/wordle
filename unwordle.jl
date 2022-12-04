@@ -1,7 +1,9 @@
-#!/usr/bin/env -S julia -t4 --startup-file=no 
+#!/usr/bin/env -S julia --threads auto --project --startup-file=no 
 #-e 'using DaemonMode; runargs()'
 using Statistics
 using ArgParse
+using DataStructures: counter
+using ThreadsX
 
 word_diff(A, B) = sum(3^i * if a==b; 1 elseif a in B; 2 else 3 end for (i, (a,b)) in enumerate(zip(A, B)))
 
@@ -9,27 +11,19 @@ word_diff1(A,B) = join(if a==b; a; elseif a in B; '+' else '-' end for (a,b) in 
 
 parse_diff(s) = sum(3^i * if a=='-'; 3 elseif a=='+'; 2; else 1 end for (i, a) in enumerate(s))
 
-freq(data) = (sum(==(x), data) for x in unique(data))
+const tmap = ThreadsX.map
+group_sizes(word, words) = values(counter(tmap(identity, (word_diff(word,w) for w in words))))
 
-negative_num_groups(word, words) = -length(unique(word_diff.(word, words)))
-
-group_sizes(word, words) = freq(word_diff.(word,words))
-
-mean_group_size(word, words) = mean(group_sizes(word, words))
-
-max_group_size(word, words) = maximum(group_sizes(word,words))
-
-expected_group_size(word, words) = mean(group_sizes(word,words).^2)
-
-entropy(word, words) = let W = length(words);  sum(S/W * log(S/W) for S in group_sizes(word,words)) ; end
+entropy(word, words) = let W = length(words); sum(S/W * log(S/W) for S in group_sizes(word,words)) ; end
 
 function unwordle(
 	word_list, 
 	guess=nothing;
-	score=mean_group_size, 
+	score=entropy, 
 	input=stdin, 
 	output=stdout
 	)
+
 	function try_word(word) 
 		println(output, word)
 		flush(output)
